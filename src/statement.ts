@@ -19,7 +19,6 @@ export default function statement(invoice: Invoice, plays: Plays) {
   let result = `청구내역 (고객명: ${invoice.customer})\n`;
 
   for (const perf of invoice.performances) {
-    // 청구 내역을 출력한다.
     result += `  ${playFor(perf).name}: ${usd(amountFor(perf))} (${
       perf.audience
     }석)\n`;
