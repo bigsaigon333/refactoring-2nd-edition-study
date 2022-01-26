@@ -66,6 +66,10 @@ export default function statement(invoice: Invoice, plays: Plays) {
     return result;
   }
 
+  function playFor(performance: Performance) {
+    return plays[performance.playID];
+  }
+
   function amountFor(performance: Performance) {
     let result = 0;
 
@@ -93,9 +97,5 @@ export default function statement(invoice: Invoice, plays: Plays) {
     }
 
     return result;
-  }
-
-  function playFor(performance: Performance) {
-    return plays[performance.playID];
   }
 }
