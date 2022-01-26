@@ -1,15 +1,19 @@
-export interface Invoice {
-  customer: string;
-  performances: Array<{ playID: string; audience: number }>;
+interface Performance {
+  playID: string;
+  audience: number;
 }
 
-export type Plays = Record<
-  string,
-  {
-    name: string;
-    type: "tragedy" | "comedy";
-  }
->;
+export interface Invoice {
+  customer: string;
+  performances: Performance[];
+}
+
+export interface Play {
+  name: string;
+  type: "tragedy" | "comedy";
+}
+
+export type Plays = Record<string, Play>;
 
 export default function statement(invoice: Invoice, plays: Plays) {
   let totalAmount = 0;
