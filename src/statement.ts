@@ -16,24 +16,37 @@ export interface Play {
 export type Plays = Record<string, Play>;
 
 export default function statement(invoice: Invoice, plays: Plays) {
-  let totalAmount = 0;
-  let volumeCredits = 0;
   let result = `청구내역 (고객명: ${invoice.customer})\n`;
 
   for (const perf of invoice.performances) {
-    volumeCredits += volumeCreditsFor(perf);
-
     // 청구 내역을 출력한다.
-    result += `  ${playFor(perf).name}: ${usd(amountFor(perf))} ${
+    result += `  ${playFor(perf).name}: ${usd(amountFor(perf))} (${
       perf.audience
-    }석\n`;
-    totalAmount += amountFor(perf);
+    }석)\n`;
   }
 
-  result += `총액 ${usd(totalAmount)}\n`;
-  result += `적립 포인트 ${volumeCredits}점\n`;
+  result += `총액 ${usd(totalAmount())}\n`;
+  result += `적립 포인트 ${totalVolumeCredits()}점\n`;
 
   return result;
+
+  function totalAmount() {
+    let result = 0;
+    for (const perf of invoice.performances) {
+      result += amountFor(perf);
+    }
+
+    return result;
+  }
+
+  function totalVolumeCredits() {
+    let result = 0;
+    for (const perf of invoice.performances) {
+      result += volumeCreditsFor(perf);
+    }
+
+    return result;
+  }
 
   function usd(num: number) {
     return new Intl.NumberFormat("en-US", {
