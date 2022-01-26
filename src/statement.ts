@@ -19,26 +19,29 @@ export default function statement(invoice: Invoice, plays: Plays) {
   let totalAmount = 0;
   let volumeCredits = 0;
   let result = `청구내역 (고객명: ${invoice.customer})\n`;
-  const { format } = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    maximumFractionDigits: 2,
-  });
 
   for (const perf of invoice.performances) {
     volumeCredits += volumeCreditsFor(perf);
 
     // 청구 내역을 출력한다.
-    result += `  ${playFor(perf).name}: ${format(amountFor(perf) / 100)} ${
+    result += `  ${playFor(perf).name}: ${usd(amountFor(perf))} ${
       perf.audience
     }석\n`;
     totalAmount += amountFor(perf);
   }
 
-  result += `총액 ${format(totalAmount / 100)}\n`;
+  result += `총액 ${usd(totalAmount)}\n`;
   result += `적립 포인트 ${volumeCredits}점\n`;
 
   return result;
+
+  function usd(num: number) {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      maximumFractionDigits: 2,
+    }).format(num / 100);
+  }
 
   function volumeCreditsFor(performance: Performance) {
     let result = 0;
