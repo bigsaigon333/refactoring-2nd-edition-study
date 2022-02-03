@@ -21,7 +21,11 @@ function renderPlainText(data: StatementData) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-function renderHtmlText(data: StatementData) {
+function htmlStatement(invoice: Invoice, plays: Plays) {
+  return renderHtml(createStatementData(invoice, plays));
+}
+
+function renderHtml(data: StatementData) {
   let result = `<h1>청구내역 (고객명: ${data.customer})</h1>\n`;
   result += "<table>\n";
   result += "<tr><th>연극</th><th>좌석 수</th><th>금액</th><tr>";
