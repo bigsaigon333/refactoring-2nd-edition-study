@@ -41,12 +41,13 @@ export default function createStatementData(invoice: Invoice, plays: Plays) {
   return statementData;
 
   function enrichPerformance(performance: Performance): EnrichPerformance {
-    const result = { ...performance };
-    const resultWithPlay = Object.assign(result, {
-      play: playFor(result),
-    });
-    const resultWithAmount = Object.assign(resultWithPlay, {
-      amount: amountFor(resultWithPlay),
+    const calculator = new PerformanceCalculator(
+      performance,
+      playFor(performance)
+    );
+    const result = { ...performance, play: calculator.play };
+    const resultWithAmount = Object.assign(result, {
+      amount: amountFor(result),
     });
     const resultWithVolumeCredits = Object.assign(resultWithAmount, {
       volumeCredits: volumeCreditsFor(resultWithAmount),
@@ -104,5 +105,15 @@ export default function createStatementData(invoice: Invoice, plays: Plays) {
 
   function totalVolumeCredits(data: Pick<StatementData, "performances">) {
     return data.performances.reduce((total, p) => total + p.volumeCredits, 0);
+  }
+}
+
+class PerformanceCalculator {
+  readonly performance: Performance;
+  readonly play: Play;
+
+  constructor(performance: Performance, play: Play) {
+    this.performance = performance;
+    this.play = play;
   }
 }
