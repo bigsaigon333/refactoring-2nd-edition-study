@@ -30,24 +30,23 @@ export default function createStatementData(
   invoice: Invoice,
   plays: Plays
 ): StatementData {
-  const data = {
+  const enrichPerformances = invoice.performances.map(enrichPerformance);
+
+  const result = {
     customer: invoice.customer,
-    performances: invoice.performances.map(enrichPerformance),
+    performances: enrichPerformances,
+    totalAmount: totalAmount(enrichPerformances),
+    totalVolumeCredits: totalVolumeCredits(enrichPerformances),
   };
 
-  const statementData: StatementData = {
-    ...data,
-    totalAmount: totalAmount(data),
-    totalVolumeCredits: totalVolumeCredits(data),
-  };
-
-  return statementData;
+  return result;
 
   function enrichPerformance(performance: Performance): EnrichPerformance {
     const calculator = createPerformanceCalculator(
       performance,
       playFor(performance)
     );
+
     const result = {
       ...performance,
       play: calculator.play,
@@ -62,14 +61,12 @@ export default function createStatementData(
     return plays[performance.playID];
   }
 
-  function totalAmount(data: Pick<StatementData, "performances">): number {
-    return data.performances.reduce((total, p) => total + p.amount, 0);
+  function totalAmount(enrichPerformances: EnrichPerformance[]): number {
+    return enrichPerformances.reduce((total, p) => total + p.amount, 0);
   }
 
-  function totalVolumeCredits(
-    data: Pick<StatementData, "performances">
-  ): number {
-    return data.performances.reduce((total, p) => total + p.volumeCredits, 0);
+  function totalVolumeCredits(enrichPerformances: EnrichPerformance[]): number {
+    return enrichPerformances.reduce((total, p) => total + p.volumeCredits, 0);
   }
 }
 
