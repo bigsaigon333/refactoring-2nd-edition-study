@@ -26,7 +26,10 @@ export interface StatementData extends Invoice {
   totalVolumeCredits: number;
 }
 
-export default function createStatementData(invoice: Invoice, plays: Plays) {
+export default function createStatementData(
+  invoice: Invoice,
+  plays: Plays
+): StatementData {
   const data = {
     customer: invoice.customer,
     performances: invoice.performances.map(enrichPerformance),

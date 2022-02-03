@@ -1,13 +1,13 @@
 import createStatementData from "./createStatementData";
 import type { Invoice, Plays, StatementData } from "./createStatementData";
 
-export default function statement(invoice: Invoice, plays: Plays) {
+export default function statement(invoice: Invoice, plays: Plays): string {
   const statementData = createStatementData(invoice, plays);
 
   return renderPlainText(statementData);
 }
 
-function renderPlainText(data: StatementData) {
+function renderPlainText(data: StatementData): string {
   let result = `청구내역 (고객명: ${data.customer})\n`;
 
   for (const perf of data.performances) {
@@ -21,11 +21,11 @@ function renderPlainText(data: StatementData) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-function htmlStatement(invoice: Invoice, plays: Plays) {
+function htmlStatement(invoice: Invoice, plays: Plays): string {
   return renderHtml(createStatementData(invoice, plays));
 }
 
-function renderHtml(data: StatementData) {
+function renderHtml(data: StatementData): string {
   let result = `<h1>청구내역 (고객명: ${data.customer})</h1>\n`;
   result += "<table>\n";
   result += "<tr><th>연극</th><th>좌석 수</th><th>금액</th><tr>";
@@ -42,7 +42,7 @@ function renderHtml(data: StatementData) {
   return result;
 }
 
-function usd(num: number) {
+function usd(num: number): string {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
