@@ -85,18 +85,13 @@ function createPerformanceCalculator(
   }
 }
 
-class PerformanceCalculator {
-  readonly performance: Performance;
-  readonly play: Play;
+abstract class PerformanceCalculator {
+  constructor(
+    public readonly performance: Performance,
+    public readonly play: Play
+  ) {}
 
-  constructor(performance: Performance, play: Play) {
-    this.performance = performance;
-    this.play = play;
-  }
-
-  get amount(): number {
-    throw new Error("서브 클래스에서 처리하도록 설계되었습니다");
-  }
+  abstract get amount(): number;
 
   get volumeCredits(): number {
     return Math.max(this.performance.audience - 30, 0);
