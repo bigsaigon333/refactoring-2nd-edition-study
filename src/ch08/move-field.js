@@ -5,7 +5,7 @@ function dateToday() {
 class Customer {
   constructor(name, discountRate) {
     this._name = name;
-    this._discountRate = discountRate;
+    this._setDiscountRate(discountRate);
     this._contract = new CustomerContract(dateToday());
   }
 
@@ -13,13 +13,28 @@ class Customer {
     return this._discountRate;
   }
 
+  _setDiscountRate(n) {
+    this._discountRate = n;
+  }
+
   becomePreferred() {
-    this._discountRate += 0.03;
+    this._setDiscountRate(this.discountRate + 0.03);
   }
 }
 
 class CustomerContract {
-  constructor(startDate) {
+  constructor(startDate, discountRate) {
     this._startDate = startDate;
+    this._discountRate = discountRate;
+  }
+
+  get discountRate() {
+    return this._discountRate;
+  }
+
+  set discountRate(arg) {
+    this._discountRate = arg;
   }
 }
+
+new Customer("donghee", 0.03);
