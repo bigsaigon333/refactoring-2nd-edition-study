@@ -5,16 +5,12 @@ function dateToday() {
 class Customer {
   constructor(name, discountRate) {
     this._name = name;
-    this._setDiscountRate(discountRate);
+    this._discountRate = discountRate;
     this._contract = new CustomerContract(dateToday());
   }
 
   get discountRate() {
     return this._discountRate;
-  }
-
-  _setDiscountRate(n) {
-    this._discountRate = n;
   }
 
   becomePreferred() {
